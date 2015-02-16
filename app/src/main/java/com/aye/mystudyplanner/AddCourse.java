@@ -1,9 +1,15 @@
 package com.aye.mystudyplanner;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 public class AddCourse extends ActionBarActivity {
@@ -13,6 +19,37 @@ public class AddCourse extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
     }
+
+    public void addClicked(View v) {
+        EditText etCode = (EditText)findViewById(R.id.code);
+        EditText etName = (EditText)findViewById(R.id.name);
+        EditText etMid = (EditText)findViewById(R.id.midtermExam);
+        EditText etFin = (EditText)findViewById(R.id.finalExam);
+
+
+        String sCode = etCode.getText().toString();
+        String sName = etName.getText().toString();
+        String sMid = etMid.getText().toString();
+        String sFin = etFin.getText().toString();
+
+        if (sCode.trim().length() == 0 || sName.trim().length() == 0) {
+            Toast t = Toast.makeText(this.getApplicationContext(),
+                    "Both course code and name are necessary.",
+                    Toast.LENGTH_SHORT);
+            t.show();
+        }
+        else {
+            Intent result = new Intent();
+            result.putExtra("code", sCode);
+            result.putExtra("name", sName);
+            result.putExtra("midterm", sMid);
+            result.putExtra("final", sFin);
+
+            this.setResult(RESULT_OK, result);
+            this.finish();
+        }
+    }
+
 
 
     @Override

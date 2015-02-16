@@ -1,17 +1,40 @@
 package com.aye.mystudyplanner;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 
 public class Courselists extends ActionBarActivity {
+
+    CourseDBHelper helper;
+    SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courselists);
+
+        CourseDBHelper helper = new CourseDBHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id, code, name FROM course;", null);
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_2, // A textview
+                cursor, // cursor to a data collection
+                new String[] {"code","name"}, // column to be displayed
+                new int[] {android.R.id.text1,android.R.id.text2}, // ID of textview to display
+                0);
+
+        ListView lv = (ListView)findViewById(R.id.listView);
+        lv.setAdapter(adapter);
+        //lv.setOnItemClickListener(this);
+        //lv.setOnItemLongClickListener(this);
     }
 
 
